@@ -1,3 +1,5 @@
+
+import cfg
 import discord
 import os
 from discord.ext import commands
@@ -5,7 +7,7 @@ from keep_me_alive import keep_me_alive
 
 intents = discord.Intents.all()
 
-client = commands.Bot(command_prefix='>', intents = intents)
+client = commands.Bot(command_prefix = cfg.bot_prefix, intents = intents)
 
 @client.event
 async def on_ready():
