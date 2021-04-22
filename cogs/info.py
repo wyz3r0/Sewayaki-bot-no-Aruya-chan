@@ -11,6 +11,7 @@ class info(commands.Cog):
 
   @commands.command(name = "userinfo", aliases = ["memberinfo", "ui", "mi"])
   async def user_info(self, ctx, target: Optional[Member]):
+    """shows information about specyfic user\nif target not passed target = author"""
     target = target or ctx.author
 
     embed = discord.Embed(title = "Uesr information", colour = target.colour)

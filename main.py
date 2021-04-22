@@ -20,8 +20,6 @@ async def on_ready():
       except:
         print(f' >> INITIAL LOADING ERROR: {filename} is invalid <<')
 
-
-
 @client.command()
 async def load(ctx, extension):
   try:
@@ -53,27 +51,52 @@ async def unload(ctx, extension):
 
 @client.command()
 async def reload(ctx, extension):
-  try:
-    client.unload_extension(f'cogs.{extension}')
+  if extension == "all":
+    for filename in os.listdir('./cogs'):
+      if filename.endswith('.py'):
+        try:
+          client.unload_extension(f'cogs.{filename[:-3]}')
+          try:
+            client.load_extension(f'cogs.{filename[:-3]}')
+            print(f' >> {filename[:-3]} successfully reloaded <<')
+            await ctx.send(f'> {filename[:-3]} successfully reloaded')
+          except commands.ExtensionAlreadyLoaded:
+            print(f' >> RELOADING ERROR: cogs.{filename[:-3]} is already loaded <<')
+            await ctx.send(f'> cogs.{filename[:-3]} is already loaded')
+          except commands.ExtensionNotFound:
+            print(f' >> RELOADING ERROR: cogs.{filename[:-3]} not found <<')
+            await ctx.send(f'> cogs.{filename[:-3]} not found')
+          except commands.ExtensionFailed:
+            print(f' >> RELOADING ERROR: cogs.{filename[:-3]} is invalid <<')
+            await ctx.send(f'> cogs.{filename[:-3]} is invalid')
+        except commands.ExtensionNotFound:
+          print(f' >> RELOADING ERROR: cogs.{filename[:-3]} not found <<')
+          await ctx.send(f'> cogs.{filename[:-3]} not found')
+        except commands.ExtensionError:
+          print(f' >> RELOADING ERROR: cogs.{filename[:-3]} is invalid <<')
+          await ctx.send(f'> cogs.{filename[:-3]} is invalid')
+  else:
     try:
-      client.load_extension(f'cogs.{extension}')
-      print(f' >> {extension} successfully reloaded <<')
-      await ctx.send(f'> {extension} successfully reloaded')
-    except commands.ExtensionAlreadyLoaded:
-      print(f' >> RELOADING ERROR: cogs.{extension} is already loaded <<')
-      await ctx.send(f'> cogs.{extension} is already loaded')
+      client.unload_extension(f'cogs.{extension}')
+      try:
+        client.load_extension(f'cogs.{extension}')
+        print(f' >> {extension} successfully reloaded <<')
+        await ctx.send(f'> {extension} successfully reloaded')
+      except commands.ExtensionAlreadyLoaded:
+        print(f' >> RELOADING ERROR: cogs.{extension} is already loaded <<')
+        await ctx.send(f'> cogs.{extension} is already loaded')
+      except commands.ExtensionNotFound:
+        print(f' >> RELOADING ERROR: cogs.{extension} not found <<')
+        await ctx.send(f'> cogs.{extension} not found')
+      except commands.ExtensionFailed:
+        print(f' >> RELOADING ERROR: cogs.{extension} is invalid <<')
+        await ctx.send(f'> cogs.{extension} is invalid')
     except commands.ExtensionNotFound:
       print(f' >> RELOADING ERROR: cogs.{extension} not found <<')
       await ctx.send(f'> cogs.{extension} not found')
-    except commands.ExtensionFailed:
+    except commands.ExtensionError:
       print(f' >> RELOADING ERROR: cogs.{extension} is invalid <<')
       await ctx.send(f'> cogs.{extension} is invalid')
-  except commands.ExtensionNotFound:
-    print(f' >> RELOADING ERROR: cogs.{extension} not found <<')
-    await ctx.send(f'> cogs.{extension} not found')
-  except commands.ExtensionError:
-    print(f' >> RELOADING ERROR: cogs.{extension} is invalid <<')
-    await ctx.send(f'> cogs.{extension} is invalid')
 
 keep_me_alive()
 client.run(os.getenv('token'))

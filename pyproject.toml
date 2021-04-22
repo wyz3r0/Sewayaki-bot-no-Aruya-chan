@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "sewayaki-bot-no-aruya-chan-1"
 version = "0.1.0"
-description = ""
-authors = ["Replit user <replituser@example.com>"]
+description = "multipurpose discord bot"
+authors = ["Wyzero", "jery03"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -10,6 +10,10 @@ discord = "^1.0.1"
 flask = "^1.1.2"
 replit = "^2.0.0"
 "discord.py" = "^1.6.0"
+discord-ext-menus = "^1.0"
+pybooru = "^4.2.2"
+requests = "^2.25.1"
+urllib3 = "^1.26.4"
 
 [tool.poetry.dev-dependencies]
 
