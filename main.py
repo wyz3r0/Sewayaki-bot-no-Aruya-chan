@@ -1,13 +1,16 @@
 
-import cfg
 import discord
 import os
 from discord.ext import commands
 from keep_me_alive import keep_me_alive
+from configparser import ConfigParser
 
 intents = discord.Intents.all()
 
-client = commands.Bot(command_prefix = cfg.bot_prefix, intents = intents)
+cfg = ConfigParser()
+cfg.read('/home/runner/Sewayaki-bot-no-Aruya-chan/cfg.ini')
+
+client = commands.Bot(command_prefix = cfg.get('general', 'bot_prefix'), intents = intents)
 
 @client.event
 async def on_ready():

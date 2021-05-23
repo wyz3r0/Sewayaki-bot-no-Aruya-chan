@@ -1,10 +1,13 @@
 
-import cfg
 from discord import Embed
 from discord.ext import menus
 from discord.ext import commands
 from discord.utils import get
 from typing import Optional
+from configparser import ConfigParser
+
+cfg = ConfigParser()
+cfg.read('/home/runner/Sewayaki-bot-no-Aruya-chan/cfg.ini')
 
 def syntax(command):
 	cmd_and_aliases = "|".join([str(command), *command.aliases])
@@ -16,7 +19,7 @@ def syntax(command):
 
 	params = " ".join(params)
 
-	return f"`{cfg.bot_prefix}{cmd_and_aliases} {params}`"
+	return f"`{default_cfg.bot_prefix}{cmd_and_aliases} {params}`"
 
 """
 class help_menue(ListPageSources):
@@ -42,9 +45,9 @@ class help(commands.Cog):
     self.client.remove_command("help")
 
   async def cmd_help(self, ctx, command):
-    embed = Embed(title = f"`{command}`", description = syntax(command), colour = cfg.bot_colour)
-    embed.add_field(name="Command description", value=command.help)
-    await ctx.send(embed=embed)
+    embed = Embed(title = f"`{command}`", description = syntax(command), colour = cfg.getint('general', 'bot_colour'))
+    embed.add_field(name = "Command description", value = command.help)
+    await ctx.send(embed = embed)
 
   @commands.command(name = "help", aliases = ["h"])
   async def h(self, ctx, cmd: Optional[str]):

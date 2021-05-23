@@ -1,9 +1,12 @@
 
-import cfg
 import discord
 from discord import Member
 from typing import Optional
 from discord.ext import commands
+from configparser import ConfigParser
+
+cfg = ConfigParser()
+cfg.read('/home/runner/Sewayaki-bot-no-Aruya-chan/cfg.ini')
 
 class info(commands.Cog):
   def __init__(self, client):
@@ -50,7 +53,7 @@ class info(commands.Cog):
   @commands.command(name = "guildroles", aliases = ["gr", "serverroles", "sr"])
   async def guild_roles(self, ctx):
 
-    embed = discord.Embed(title = "Guild  roles:", colour = cfg.bot_colour)
+    embed = discord.Embed(title = "Guild  roles:", colour = cfg.getint('general', 'bot_colour'))
 
     embed.set_thumbnail(url = ctx.guild.icon_url)
 
@@ -65,7 +68,7 @@ class info(commands.Cog):
 
   @commands.command(name = "guildinfo", aliases = ["gi", "serverinfo", "si"])
   async def guild_info(self, ctx):
-    embed = discord.Embed(title = "Server information", colour = cfg.bot_colour)
+    embed = discord.Embed(title = "Server information", colour = cfg.getint('general', 'bot_colour'))
 
     embed.set_thumbnail(url = ctx.guild.icon_url)
 

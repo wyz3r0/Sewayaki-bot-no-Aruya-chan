@@ -7,9 +7,12 @@ import json
 import urllib.request
 import os
 from random import randint
-import cfg
+from configparser import ConfigParser
 
-dan = Danbooru(cfg.site)    #creating object dan with given site
+cfg = ConfigParser()
+cfg.read('/home/runner/Sewayaki-bot-no-Aruya-chan/cfg.ini')
+
+dan = Danbooru(cfg.get('general', 'site'))    #creating object dan with given site
 
 class danbooru(commands.Cog):
   def __init__(self, client):
@@ -72,17 +75,20 @@ class danbooru(commands.Cog):
       a = []  
       await ctx.send("> there's no such tag")
 
-    while x < 10 and a != []:   #prefenting to big files for destroying the program
-      random = randint(1, 1000)
+    while x < 10 and a != []:   #prefenting to big files for destroying the program (10 -> tries)
+      pages = 1000              #number of pages to search throught
+      random = randint(1, pages)
 
       id_list = dan.post_list(limit = number_of_images, page = random, tags = tags) #getting posts
 
       for i in id_list:   #main loop
 
-        json_str = json.dumps(i)    #changing python dict to json str
+        json_str = json.dumps(i)              #changing python dict to json str
         json_object = json.loads(json_str)    #changing json str to json object
 
-        if json_object['file_size'] <= 8000000:   #checking if file isn't to big
+        max_file_size = 8000000               #max file size for discord
+
+        if json_object['file_size'] <= max_file_size:   #checking if file isn't to big
           
           print("file id ", json_object['id'])
           print("fileurl ", json_object['file_url'])
@@ -91,7 +97,7 @@ class danbooru(commands.Cog):
           character = json_object['tag_string_character']   #list of charater names
           character = character.split(sep = ' ')
 
-          embed = discord.Embed(title = character[0], colour = cfg.bot_colour)    #creating embed
+          embed = discord.Embed(title = character[0], colour = cfg.getint('generat', 'bot_colour'))    #creating embed
           embed.set_author(name = f"author: {json_object['tag_string_artist']}")  #adding author to embed
           embed.set_footer(text = json_object['file_url'])                        #adding url to embed
 

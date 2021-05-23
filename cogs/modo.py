@@ -1,6 +1,10 @@
 
 import discord
 from discord.ext import commands
+from configparser import ConfigParser
+
+cfg = ConfigParser()
+cfg.read('/home/runner/Sewayaki-bot-no-Aruya-chan/cfg.ini')
 
 class modo(commands.Cog):
   def __init__(self, client):
